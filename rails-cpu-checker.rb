@@ -11,16 +11,6 @@ require "json"
 # DFコマンドとFreeコマンドに共通する処理
 module CommonModule
   private
-  # ヘッダーを基準に最大列数を取得する
-  def get_max_columns(console_result)
-    max_number_of_columns = 0
-    console_result.each_line.with_index do |line, index|
-      tmp = line.chomp.split(" ").length
-      max_number_of_columns = tmp if max_number_of_columns < tmp and index > 0
-    end
-    return max_number_of_columns
-  end
-
   # コマンドの結果（表形式）をネストした配列（１層目は行別、２層目は列別）に変換する
   def convert_text_to_array(console_result, max_number_of_columns)
     array_type_command = Array.new
