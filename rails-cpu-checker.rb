@@ -70,6 +70,6 @@ loop do
       puts JSON.pretty_generate(value)
       `say "ルビーのCPU使用率が高くなっています。確認してください。"`
     end
-    sleep(3)
+    sleep(10)
   end
 end
