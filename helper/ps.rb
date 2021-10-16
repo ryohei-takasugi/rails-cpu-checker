@@ -2,9 +2,13 @@ require_relative "common"
 
 module PsModule
   include CommonModule
-  def ps(opt: nil)
+  def ps(opt: nil, head_line: nil)
     # コマンドを実行する
-    console_result = terminal(opt)
+    if head_line.nil?
+      console_result = `ps #{opt}`
+    else
+      console_result = `ps #{opt} | head -n #{head_line}`
+    end
     # オプションコマンドが有効か判定する
     if feasible?(opt, console_result)
       # シェルで実行した結果を配列に変換してから、ハッシュ型に変換する
@@ -17,9 +21,6 @@ module PsModule
     end
   end
   private
-  def terminal(opt)
-    `ps #{opt}`
-  end
   # オプションコマンドが有効か判定する
   def feasible?(opt, console_result)
     # オプションが無いならOK
