@@ -14,8 +14,8 @@ include PsModule
 # 無限ループ（停止方法 Ctrl+C）
 loop do
   # ps aux | head -n 4
-  result = ps(opt: "aux", head_line: 4)
-  unless result.include?("error")
+  result = ps(opt: "aux", head: 4)
+  unless result.include?("SCRIPT ERROR")
     result.each do |key, value|
       # CPU使用率60%以上、かつ、spring/application/bootを含むプロセスのみ通知する
       if value["%CPU"] > 60.0 && value["COMMAND"].include?("spring/application/boot")

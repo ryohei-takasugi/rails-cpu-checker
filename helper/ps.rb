@@ -4,7 +4,7 @@ module PsModule
   include CommonModule
   def ps(opt: nil, head: nil)
     if feasible_opt?(opt)
-      opt << " | head -n #{head_line}" if feasible_head?(head)
+      opt = "#{opt} | head -n #{head}" if feasible_head?(head)
       console_result = `ps #{opt}`
       if feasible_result?(console_result)
         # シェルで実行した結果を配列に変換してから、ハッシュ型に変換する
@@ -59,7 +59,7 @@ module PsModule
   # エラー文言
   def output_error(error_string)
     <<-TEXT
-    error: This options cannot be used by this script.
+    SCRIPT ERROR: This options cannot be used by this script.
            Or you specified an option that does not exist.
             -s, -c, -v, -h, -f 
             --version, --help
