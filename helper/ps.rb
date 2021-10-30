@@ -2,13 +2,10 @@ require_relative "common"
 
 module PsModule
   include CommonModule
-  def ps(opt: nil, head_line: nil)
+  def ps(opt: nil, head: nil)
     if feasible_opt?(opt)
-      if head_line.nil?
-        console_result = `ps #{opt}`
-      else
-        console_result = `ps #{opt} | head -n #{head_line}`
-      end
+      opt << " | head -n #{head_line}" if feasible_head?(head)
+      console_result = `ps #{opt}`
       if feasible_result?(console_result)
         # シェルで実行した結果を配列に変換してから、ハッシュ型に変換する
         convert_of_ps(console_result)
@@ -25,13 +22,13 @@ module PsModule
   # 処理できないオプションはfalseにする
   def feasible_opt?(opt)
     case
-    when opt.nil?                      then return true
-    when opt.include?("s")             then return false
-    when opt.include?("c")             then return false
-    when opt.include?("v")             then return false
-    when opt.include?("h")             then return false
-    when opt.include?("f")             then return false
-    when opt.include?("help")          then return false
+    when opt.nil?                       then return true
+    when opt.include?("s")              then return false
+    when opt.include?("c")              then return false
+    when opt.include?("v")              then return false
+    when opt.include?("h")              then return false
+    when opt.include?("f")              then return false
+    when opt.include?("help")           then return false
     when opt.match(/\A[a-z]+\z/) == nil then return false
     else
       return true
@@ -41,6 +38,10 @@ module PsModule
   def feasible_result?(console_result)
     # 実行してみて結果が帰ってこない場合もfalseにする
     console_result.include?("PID")
+  end
+  # head の 行数 が数字であること
+  def feasible_head?(head_number)
+    head_number.integer?
   end
   # 変換のメイン処理
   def convert_of_ps(console_result)
