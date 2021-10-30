@@ -22,11 +22,13 @@ loop do
         puts "--------------------------"
         puts Time.now
         puts JSON.pretty_generate(value)
-        `say "ルビーのCPU使用率が高くなっています。確認してください。"`
+        `say "ルビーのCPU使用率が高くなっています。スプリングストップコマンドを実行してください。"`
       end
     end
   else
-    puts "error..."
+    puts result
+    puts "stop script."
+    break
   end
   sleep(10)
 end
